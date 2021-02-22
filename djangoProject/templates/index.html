@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+{#<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>#}
+
+<div class="container-fluid">
+    <h1 class="display-4" align="center">Welcome To Student Management</h1>
+    <hr>
+    <div class="col-md-6     float-left">
+        <table class="table" id="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Course</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in data %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{{ i.course }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="float-right border-0">
+        <form class="form-group m-3 p-2" style="border: black" studDTA()
+        " method="get">
+        <h2 align="center" class="m-3 p-2">Enter Student Data</h2>
+        <input type="text" id="name" name="name" class="form-control m-3 p-2" placeholder="Enter Your Name">
+        <input type="email" id="email" name="email" class="form-control m-3 p-2" placeholder="Enter Your Mail">
+        <input type="text" id="course" name="course" class="form-control m-3 p-2" placeholder="Enter Your Course">
+        <button type="button" onclick="bntClick()" class="btn btn-secondary col-md-9 m-3 p-2">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+
+
+<script>
+    function bntClick() {
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let course = document.getElementById("course").value;
+
+        let url = "studData?name=" + name + "&email=" + email + "&course=" + course;
+
+        let req = new XMLHttpRequest()
+        req.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText == "true") {
+                    let table = document.getElementById("table");
+                    let row = table.insertRow(table.rows.length);
+                    let name1 = row.insertCell(0);
+                    let email1 = row.insertCell(1);
+                    let course1 = row.insertCell(2);
+                    name1.innerHTML = name;
+                    email1.innerHTML = email;
+                    course1.innerHTML = course;
+                   document.getElementById("name").value="";
+                   document.getElementById("email").value="";
+                   document.getElementById("course").value="";
+                }
+            }
+        }
+        req.open("GET", url, true)
+        req.send()
+    }
+</script>
+
+
+</html>
